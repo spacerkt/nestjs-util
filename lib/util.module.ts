@@ -8,19 +8,19 @@ import { UtilModuleOptions, UtilAsyncModuleOptions } from './interfaces';
   exports: [CryptoModule, TypeOrmUtilModule],
 })
 export class UtilModule {
-  static forRoot(options: UtilModuleOptions): DynamicModule {
+  static forRoot(options?: UtilModuleOptions): DynamicModule {
     return {
       module: UtilModule,
-      global: options.isGlobal,
+      global: options?.isGlobal,
       imports: [CryptoModule, TypeOrmUtilModule],
       exports: [CryptoModule, TypeOrmUtilModule],
     };
   }
 
-  static forRootAsync(options: UtilAsyncModuleOptions): DynamicModule {
+  static forRootAsync(options?: UtilAsyncModuleOptions): DynamicModule {
     return {
       module: UtilModule,
-      global: options.isGlobal,
+      global: options?.isGlobal,
       imports: [CryptoModule, TypeOrmUtilModule],
       exports: [CryptoModule, TypeOrmUtilModule],
     };
