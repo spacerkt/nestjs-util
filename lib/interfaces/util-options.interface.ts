@@ -1,4 +1,4 @@
-import { ModuleMetadata } from '@nestjs/common';
+import { ModuleMetadata } from '@nestjs/common/interfaces';
 
 export interface UtilModuleOptions {
   isGlobal?: boolean;
