@@ -20,18 +20,18 @@
   "devDependencies": {
     "@nestjs/cli": "^7.0.0",
     "@nestjs/common": "^7.0.0",
+    "@nestjs/config": "^0.5.0",
     "@nestjs/core": "^7.0.0",
+    "@nestjs/microservices": "^7.3.2",
+    "@nestjs/swagger": "^4.5.7",
     "@nestjs/testing": "^7.0.0",
     "@nestjs/typeorm": "^7.0.0",
-    "@nestjs/config": "^0.5.0",
-    "@nestjs/swagger": "^4.5.7",
-    "typeorm": "^0.2.24",
-    "class-transformer": "^0.2.3",
-    "class-validator": "^0.12.2",
     "@types/jest": "^25.1.4",
     "@types/node": "^13.9.1",
     "@typescript-eslint/eslint-plugin": "^2.23.0",
     "@typescript-eslint/parser": "^2.23.0",
+    "class-transformer": "^0.2.3",
+    "class-validator": "^0.12.2",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-import": "^2.20.1",
@@ -44,7 +44,8 @@
     "ts-loader": "^6.2.1",
     "ts-node": "^8.6.2",
     "tsconfig-paths": "^3.9.0",
-    "typescript": "^3.7.4"
+    "typeorm": "^0.2.24",
+    "typescript": "^3.9.7"
   },
   "peerDependencies": {
     "@nestjs/common": "^6.7.0 || ^7.0.0",
