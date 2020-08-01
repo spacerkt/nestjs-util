@@ -31,7 +31,7 @@ export class TypeOrmExceptionFilter {
       );
       return TypeOrmExceptionFilter.exceptionByCtx[ctx](
         Errors.CONFLICT,
-        `ALREADY_EXISTS ${key}`,
+        `AlreadyExists ${key}`,
       );
     },
     [typeOrmCodeErrors.notNull]: (err: any, ctx?: ContextType): Error => {
