@@ -12,4 +12,5 @@ export * from './promise-type.util';
 export * from './random-number.util';
 export * from './tuple-n.util';
 export * from './util.module';
+export * from './num-string-to-bool.util';
 
