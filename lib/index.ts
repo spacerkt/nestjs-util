@@ -2,6 +2,7 @@ export * from './dtos';
 export * from './enums';
 export * from './interfaces';
 export * from './typeorm';
+export * from './decorators';
 
 export * from './binary-search.util';
 export * from './date-utc.util';
