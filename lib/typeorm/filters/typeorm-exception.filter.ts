@@ -8,77 +8,80 @@ import {
 import { RpcException } from '@nestjs/microservices';
 
 import { typeOrmCodeErrors } from '../constants/typeorm-util.constants';
+import { TypeORMError } from '../interfaces/typeorm-error.interface';
+import { TypeOrmErrors } from '../enums/typeorm-errors.enum';
 
-enum Errors {
-  INTERNAL = 'Error',
-  CONFLICT = 'Conflict',
-  BADREQUEST = 'BadRequest',
-}
-
-type ErrFunc = (err: any, ctx?: ContextType) => Error;
+type ErrFunc = (err: TypeORMError, ctx?: ContextType) => Error;
+type ExFunc = (type: TypeOrmErrors, msg: string) => Error;
 
 export class TypeOrmExceptionFilter {
   private static readonly logger = new Logger();
-  private static readonly filter: Record<string, ErrFunc> = {
-    [typeOrmCodeErrors.uniqueConstraint]: (
-      err: any,
-      ctx?: ContextType,
-    ): Error => {
-      const { detail } = err;
-      const key = detail.substring(
-        detail.indexOf('(') + 1,
-        detail.indexOf(')'),
-      );
-      return TypeOrmExceptionFilter.exceptionByCtx[ctx](
-        Errors.CONFLICT,
-        `AlreadyExists ${key}`,
-      );
-    },
-    [typeOrmCodeErrors.notNull]: (err: any, ctx?: ContextType): Error => {
-      return TypeOrmExceptionFilter.exceptionByCtx[ctx](
-        Errors.BADREQUEST,
-        err.message,
-      );
-    },
-  };
-
-  private static readonly exceptionByCtx: Record<
+  private static readonly filterMap: ReadonlyMap<string, ErrFunc> = new Map<
     string,
-    (type: Errors, msg: string) => Error
-  > = {
-    rpc(type: Errors, msg: string) {
-      return new RpcException(`${type}: ${msg}`);
-    },
-    http(type: Errors, msg: string) {
-      switch (type) {
-        case Errors.CONFLICT:
-          return new ConflictException(msg);
-        case Errors.BADREQUEST:
-          return new BadRequestException(msg);
-        case Errors.INTERNAL:
-          return new InternalServerErrorException(msg);
-      }
-    },
-  };
+    ErrFunc
+  >([
+    [
+      typeOrmCodeErrors.uniqueConstraint,
+      (err, ctx?): Error => {
+        const { detail } = err;
+        const key = detail.substring(
+          detail.indexOf('(') + 1,
+          detail.indexOf(')'),
+        );
+        return TypeOrmExceptionFilter.exceptionByCtxMap.get(ctx)(
+          TypeOrmErrors.CONFLICT,
+          `AlreadyExists ${key}`,
+        );
+      },
+    ],
+    [
+      typeOrmCodeErrors.notNull,
+      (err, ctx?): Error => {
+        return TypeOrmExceptionFilter.exceptionByCtxMap.get(ctx)(
+          TypeOrmErrors.BADREQUEST,
+          err.message,
+        );
+      },
+    ],
+  ]);
 
-  constructor(err: any, scope?: string, ctx?: ContextType) {
+  private static readonly exceptionByCtxMap: ReadonlyMap<
+    string,
+    ExFunc
+  > = new Map<string, ExFunc>([
+    [
+      'rpc',
+      (type: TypeOrmErrors, msg: string) => {
+        return new RpcException(`${type}: ${msg}`);
+      },
+    ],
+    [
+      'http',
+      (type: TypeOrmErrors, msg: string) => {
+        switch (type) {
+          case TypeOrmErrors.CONFLICT:
+            return new ConflictException(msg);
+          case TypeOrmErrors.BADREQUEST:
+            return new BadRequestException(msg);
+          default:
+            return new InternalServerErrorException(msg);
+        }
+      },
+    ],
+  ]);
+
+  constructor(err: TypeORMError, scope?: string, ctx?: ContextType) {
     if (!err.code) {
       throw err;
     }
-    const errFunc = TypeOrmExceptionFilter.filter[err.code];
+    const errFunc = TypeOrmExceptionFilter.filterMap.get(err.code);
     if (!errFunc) {
       TypeOrmExceptionFilter.logger.error(
         err,
         scope ?? 'TypeOrmExceptionFilter',
       );
-      switch (ctx) {
-        case 'rpc':
-          throw new RpcException('Error: INTERNAL');
-        default:
-          throw new InternalServerErrorException();
-      }
+      throw TypeOrmExceptionFilter.exceptionByCtxMap.get(ctx);
     }
     throw errFunc(err, ctx);
   }
 }
-
