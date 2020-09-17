@@ -46,9 +46,9 @@ export class TypeOrmExceptionFilter {
   ]);
 
   private static readonly exceptionByCtxMap: ReadonlyMap<
-    string,
+    ContextType,
     ExFunc
-  > = new Map<string, ExFunc>([
+  > = new Map<ContextType, ExFunc>([
     [
       'rpc',
       (type: TypeOrmErrors, msg: string) => {
@@ -80,7 +80,7 @@ export class TypeOrmExceptionFilter {
         err,
         scope ?? 'TypeOrmExceptionFilter',
       );
-      throw TypeOrmExceptionFilter.exceptionByCtxMap.get(ctx);
+      throw TypeOrmExceptionFilter.exceptionByCtxMap.get(ctx ?? 'http');
     }
     throw errFunc(err, ctx);
   }
