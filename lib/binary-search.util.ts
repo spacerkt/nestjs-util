@@ -1,7 +1,7 @@
 export function binarySearch<T>(
   arr: T[],
-  value: T,
-  compare: (a: T, b: T) => number,
+  value: Partial<T>,
+  compare: (a: T, b: Partial<T>) => number,
 ): number {
   let min = 0;
   let max = arr.length;
