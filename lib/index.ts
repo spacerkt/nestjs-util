@@ -5,6 +5,7 @@ export * from './typeorm';
 export * from './decorators';
 
 export * from './binary-search.util';
+export * from './compare.util';
 export * from './date-utc.util';
 export * from './descriptor.util';
 export * from './merge-one-to-many.util';
