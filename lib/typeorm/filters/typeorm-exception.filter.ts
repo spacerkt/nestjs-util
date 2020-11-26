@@ -80,7 +80,10 @@ export class TypeOrmExceptionFilter {
         err,
         scope ?? 'TypeOrmExceptionFilter',
       );
-      throw TypeOrmExceptionFilter.exceptionByCtxMap.get(ctx ?? 'http');
+      throw TypeOrmExceptionFilter.exceptionByCtxMap.get(ctx ?? 'http')(
+        TypeOrmErrors.INTERNAL,
+        'default',
+      );
     }
     throw errFunc(err, ctx);
   }
