@@ -3,6 +3,7 @@ export * from './enums';
 export * from './interfaces';
 export * from './typeorm';
 export * from './decorators';
+export * from './providers';
 
 export * from './binary-search.util';
 export * from './compare.util';
