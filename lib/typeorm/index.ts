@@ -5,4 +5,4 @@ export * from './factories';
 export * from './filters';
 export * from './interfaces';
 export * from './typeorm-util.module';
-
+export * from './testing';
