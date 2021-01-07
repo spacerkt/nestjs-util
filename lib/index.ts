@@ -4,6 +4,7 @@ export * from './interfaces';
 export * from './typeorm';
 export * from './decorators';
 export * from './providers';
+export * from './testing';
 
 export * from './binary-search.util';
 export * from './compare.util';
