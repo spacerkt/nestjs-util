@@ -1,6 +1,6 @@
 {
   "name": "spacerkt-util-nestjs",
-  "version": "0.0.31",
+  "version": "0.0.32",
   "description": "Common utilities for NestJS",
   "author": "Space Rocket",
   "license": "MIT",

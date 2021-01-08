@@ -16,7 +16,7 @@ export async function initTestDatabase(
   }
   await connection.synchronize(true);
   if (!path) {
-    return [connection, { loaded: 0, inserted: 0 }];
+    return [connection, { loaded: 0, inserted: 0, updated: 0 }];
   }
   const result = await loadFixtures(path, connection);
   return [connection, result];
