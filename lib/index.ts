@@ -17,3 +17,4 @@ export * from './tuple-n.util';
 export * from './util.module';
 export * from './num-string-to-bool.util';
 export * from './promisify-line-reader';
+export * from './delay.util';
