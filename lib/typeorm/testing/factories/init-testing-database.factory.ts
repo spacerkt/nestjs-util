@@ -1,23 +1,20 @@
 import { INestApplication } from '@nestjs/common';
 import { Connection } from 'typeorm';
 import { loadFixtures } from '../utils';
+import { LoadFixturesResult } from '../../interfaces/load-fixtures-result.interface';
 
 export async function initTestDatabase(
   app: INestApplication,
   path: string,
-  logger = false,
-): Promise<Connection | undefined> {
+): Promise<[Connection | undefined, LoadFixturesResult | undefined]> {
   if (process.env.NODE_ENV !== 'test') {
-    return undefined;
+    return [undefined, undefined];
   }
   const connection = app.get<Connection>(Connection);
   if (!connection) {
-    return undefined;
+    return [undefined, undefined];
   }
   await connection.synchronize(true);
   const result = await loadFixtures(path, connection);
-  if (logger) {
-    console.log('Fixtures:', result);
-  }
-  return connection;
+  return [connection, result];
 }

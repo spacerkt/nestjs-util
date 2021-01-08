@@ -1,20 +1,16 @@
 import fs = require('fs');
 import { Connection } from 'typeorm';
+import { LoadFixturesResult } from '../../interfaces/load-fixtures-result.interface';
 
 interface IEntity<T = unknown> {
   table: string;
   data: T[];
 }
 
-interface IResult {
-  loaded: number;
-  inserted: number;
-}
-
 export async function loadFixtures(
   path: string,
   connection: Connection,
-): Promise<IResult> {
+): Promise<LoadFixturesResult> {
   try {
     const file: IEntity[] | undefined | null = JSON.parse(
       fs.readFileSync(path).toString(),
