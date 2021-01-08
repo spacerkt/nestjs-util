@@ -1,6 +1,6 @@
 export function delay<T = unknown>(
-  timeout: number,
   promise: () => Promise<T>,
+  timeout: number,
 ): Promise<T> {
   return new Promise<T>((resolve, reject) => {
     setTimeout(() => {
