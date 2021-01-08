@@ -5,7 +5,7 @@ import { LoadFixturesResult } from '../../interfaces/load-fixtures-result.interf
 
 export async function initTestDatabase(
   app: INestApplication,
-  path: string,
+  path?: string,
 ): Promise<[Connection | undefined, LoadFixturesResult | undefined]> {
   if (process.env.NODE_ENV !== 'test') {
     return [undefined, undefined];
@@ -15,6 +15,9 @@ export async function initTestDatabase(
     return [undefined, undefined];
   }
   await connection.synchronize(true);
+  if (!path) {
+    return [connection, { loaded: 0, inserted: 0 }];
+  }
   const result = await loadFixtures(path, connection);
   return [connection, result];
 }
