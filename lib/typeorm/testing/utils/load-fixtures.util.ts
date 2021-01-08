@@ -7,11 +7,13 @@ interface Entity<T = unknown> {
   data: T[];
 }
 
-interface EntityUpdate extends Entity {
-  cond: {
-    column: string;
-    data: unknown;
-  };
+interface EntityUpdate extends Pick<Entity, 'table'> {
+  data: {
+    cond: {
+      column: string;
+      value: unknown;
+    };
+  }[];
 }
 
 interface Fixtures {
@@ -21,11 +23,11 @@ interface Fixtures {
 
 function checkEntity(entity: Entity): boolean {
   if (!entity.table) {
-    console.warn('Entity without "table" property. Skipping it');
+    console.warn('Entity without "table" property. Skipping it', entity);
     return false;
   }
   if (!entity.data || !(entity.data instanceof Array)) {
-    console.warn('Entity without "data" property. Skipping it');
+    console.warn('Entity without "data" property. Skipping it', entity);
     return false;
   }
   return true;
@@ -59,14 +61,22 @@ export async function loadFixtures(
         if (!checkEntity(entity)) {
           return;
         }
-        if (!entity.cond || !(entity.cond.data && entity.cond.column)) {
-          console.warn('Entity without primary column descriptor. Skipping it');
-          return;
-        }
-        const { affected } = await manager
-          .getRepository(entity.table)
-          .update({ [entity.cond.column]: entity.cond.data }, entity.data);
-        updated += affected ?? 0;
+        const repo = manager.getRepository(entity.table);
+        const result = await Promise.all(
+          entity.data.map(row => {
+            if (!row.cond || !(row.cond.value && row.cond.column)) {
+              console.log('Row without "cond" property. Skipping it', row);
+              return;
+            }
+            const data = { ...row };
+            delete data.cond;
+            return repo.update({ [row.cond.column]: row.cond.value }, data);
+          }),
+        );
+        updated += result.reduce(
+          (prev, curr) => prev + (curr.affected ?? 0),
+          0,
+        );
       }
       return { inserted, updated };
     });
