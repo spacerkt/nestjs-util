@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import { Connection } from 'typeorm';
-import { loadFixtures } from './utils';
+import { loadFixtures } from '../utils';
 
 export async function initTestDatabase(
   app: INestApplication,
