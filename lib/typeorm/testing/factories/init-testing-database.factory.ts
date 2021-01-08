@@ -1,11 +1,11 @@
-import { INestApplication, Logger } from '@nestjs/common';
+import { INestApplication } from '@nestjs/common';
 import { Connection } from 'typeorm';
 import { loadFixtures } from '../utils';
 
 export async function initTestDatabase(
   app: INestApplication,
   path: string,
-  logger?: Logger,
+  logger = false,
 ): Promise<Connection | undefined> {
   if (process.env.NODE_ENV !== 'test') {
     return undefined;
@@ -17,7 +17,7 @@ export async function initTestDatabase(
   await connection.synchronize(true);
   const result = await loadFixtures(path, connection);
   if (logger) {
-    logger.log(`Fixtures: ${JSON.stringify(result)}`);
+    console.log('Fixtures:', result);
   }
   return connection;
 }
