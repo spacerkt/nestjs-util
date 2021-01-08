@@ -1,1 +1,1 @@
-export * from './loadFixtures';
+export * from './load-fixtures.util';

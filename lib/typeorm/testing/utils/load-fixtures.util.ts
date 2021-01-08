@@ -22,23 +22,26 @@ export async function loadFixtures(
     if (!(file instanceof Array)) {
       throw new Error('Data not supported');
     }
-    let inserted = 0;
-    for (const entity of file) {
-      if (!entity.table) {
-        console.warn('Entity without "table" property. Skipping it');
-        return;
+    const result = await connection.transaction(async manager => {
+      let inserted = 0;
+      for (const entity of file) {
+        if (!entity.table) {
+          console.warn('Entity without "table" property. Skipping it');
+          return;
+        }
+        if (!entity.data || !(entity.data instanceof Array)) {
+          console.warn('Entity without "data" property. Skipping it');
+          return;
+        }
+        const { length } = await manager
+          .getRepository(entity.table)
+          .save(entity.data);
+        inserted += length;
       }
-      if (!entity.data || !(entity.data instanceof Array)) {
-        console.warn('Entity without "data" property. Skipping it');
-        return;
-      }
-      const { length } = await connection
-        .getRepository(entity.table)
-        .save(entity.data);
-      inserted += length;
-    }
+      return inserted;
+    });
     return {
-      inserted,
+      inserted: result,
       loaded: file.length,
     };
   } catch (err) {
