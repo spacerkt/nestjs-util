@@ -1,27 +1,40 @@
 import { Connection, QueryRunner, EntityManager } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 
+/**
+ * Represent a db transaction
+ */
 export class QueryRunnerTransaction {
-  /*
+  /**
    * Indicates either connection was closed or not
    */
   destroyed = false;
   constructor(private readonly queryRunner: QueryRunner) {}
 
-  beginTransaction(): Promise<void> {
-    if (!this.queryRunner.isTransactionActive) {
-      return this.queryRunner.startTransaction();
+  async beginTransaction(): Promise<void> {
+    if (this.queryRunner.isTransactionActive) {
+      return;
     }
+    return this.queryRunner.startTransaction();
   }
 
-  commit(): Promise<void> {
-    return this.queryRunner.commitTransaction();
+  async commit(): Promise<void> {
+    if (this.destroyed) {
+      return;
+    }
+    await this.queryRunner.commitTransaction();
   }
 
-  rollback(): Promise<void> {
-    return this.queryRunner.rollbackTransaction();
+  async rollback(): Promise<void> {
+    if (this.destroyed) {
+      return;
+    }
+    await this.queryRunner.rollbackTransaction();
   }
 
+  /**
+   * release transaction, must be called after rollback/commit
+   */
   release(): Promise<void> {
     this.destroyed = true;
     return this.queryRunner.release();
@@ -32,6 +45,9 @@ export class QueryRunnerTransaction {
   }
 }
 
+/**
+ * Create a [[QueryRunnerTransaction]]
+ */
 @Injectable()
 export class QueryRunnerFactory {
   constructor(private readonly connection: Connection) {}
@@ -43,4 +59,3 @@ export class QueryRunnerFactory {
     return new QueryRunnerTransaction(queryRunner);
   }
 }
-

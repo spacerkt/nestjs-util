@@ -14,6 +14,9 @@ import { TypeOrmErrors } from '../enums/typeorm-errors.enum';
 type ErrFunc = (err: TypeORMError, ctx?: ContextType) => Error;
 type ExFunc = (type: TypeOrmErrors, msg: string) => Error;
 
+/**
+ * Receive an TypeOrmException and based on context returns correct Error instance
+ */
 export class TypeOrmExceptionFilter {
   private static readonly logger = new Logger();
   private static readonly filterMap: ReadonlyMap<string, ErrFunc> = new Map<

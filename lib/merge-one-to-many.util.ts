@@ -1,4 +1,4 @@
-/**
+/***
  * mergeManyToOneEntity - Used to map an array of Entity2 to a property in an Entity1
  * Entity2 should have a foreign key to Entity1
  * @param entities1 array of entities

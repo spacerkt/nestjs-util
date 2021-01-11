@@ -1,6 +1,10 @@
 import readline = require('readline');
 import fs = require('fs');
 
+/**
+ * Read lines from file async.
+ * Possible usage: csvs
+ */
 export function promisifyLineReader<T>(
   path: string,
   cb: (line: string) => Promise<T>,

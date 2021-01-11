@@ -1,3 +1,6 @@
+/**
+ * @returns date in UTC
+ */
 export function dateToUTC(date: Date): number {
   return Date.UTC(
     date.getUTCFullYear(),

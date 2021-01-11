@@ -6,6 +6,9 @@ enum SQLOrder {
   ASC = 'ASC',
 }
 
+/**
+ * Common dto for GET routes
+ */
 export abstract class GetAllDto {
   @IsOptional()
   @IsString()

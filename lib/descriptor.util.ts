@@ -1,3 +1,6 @@
+/**
+ * @returns metadata of data
+ */
 export function descriptor<T, S>(data: T, context: S) {
   return {
     type: typeof data,
@@ -5,4 +8,3 @@ export function descriptor<T, S>(data: T, context: S) {
     context,
   };
 }
-

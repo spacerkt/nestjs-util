@@ -1,3 +1,6 @@
+/**
+ * setTimeout promisified
+ */
 export function delay<T = unknown>(
   promise: () => Promise<T>,
   timeout: number,

@@ -1,1 +1,6 @@
-export type Tuple<TItem, TLength extends number> = [TItem, ...TItem[]] & {length: TLength};
+/**
+ * Generate a tuple with arbitrary length
+ */
+export type Tuple<TItem, TLength extends number> = [TItem, ...TItem[]] & {
+  length: TLength;
+};

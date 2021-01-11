@@ -1,0 +1,6 @@
+{
+  "entryPoints": ["lib/index.ts"],
+  "out": "docs",
+  "exclude": "**/*+(e2e|spec|index).ts",
+  "excludePrivate": true
+}

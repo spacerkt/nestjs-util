@@ -1,5 +1,9 @@
 import { LoggerService } from '@nestjs/common';
 
+/**
+ * Override Logger from nestjs
+ * prevent logger to output any data
+ */
 export class TestLogger implements LoggerService {
   log(message: string) {}
   error(message: string, trace: string) {}

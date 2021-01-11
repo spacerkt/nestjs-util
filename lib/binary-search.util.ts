@@ -1,3 +1,8 @@
+/**
+ * binarySearch
+ *
+ * @param arr must be in order, otherwise undefined behavior
+ */
 export function binarySearch<T>(
   arr: T[],
   value: Partial<T>,

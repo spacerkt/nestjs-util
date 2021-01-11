@@ -1,3 +1,6 @@
+/**
+ * convert string to boolean
+ */
 export function numStringToBool(value: string | boolean) {
   if (typeof value === 'boolean') {
     return value;
@@ -10,4 +13,3 @@ export function numStringToBool(value: string | boolean) {
   }
   return value ? !!parseInt(value) : false;
 }
-
