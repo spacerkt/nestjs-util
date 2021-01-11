@@ -2,6 +2,8 @@
 
 NestJS Utils to Space Rocket Projects
 
+`npx typedoc` for full documentation
+
 ## TypeOrmUtil
 
 - QueryRunnerFactory -> instanciate a QueryRunnerTransaction object
