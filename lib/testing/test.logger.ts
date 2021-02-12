@@ -11,5 +11,4 @@ export class TestLogger implements LoggerService {
   debug(message: string) {}
   verbose(message: string) {}
   setContext(message: string): void {}
-  getTimestamp(): string {}
 }
