@@ -10,4 +10,6 @@ export class TestLogger implements LoggerService {
   warn(message: string) {}
   debug(message: string) {}
   verbose(message: string) {}
+  setContext(message: string): void {}
+  getTimestamp(): string {}
 }
